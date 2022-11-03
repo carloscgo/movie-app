@@ -3,10 +3,10 @@ import { createSelector } from 'reselect'
 import { initialState } from './reducer'
 
 /**
- * Direct selector to the genres state domain
+ * Direct selector to the error state domain
  */
 
-export const selectDomain = state => state.genres || initialState
+export const selectDomain = (state: any) => state.error || initialState
 
 /**
  * @function makeDataSelector
@@ -15,5 +15,5 @@ export const selectDomain = state => state.genres || initialState
 export const makeDataSelector = () =>
   createSelector(
     selectDomain,
-    substate => substate
+    substate => substate.message
   )

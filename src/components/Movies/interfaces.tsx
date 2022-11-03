@@ -1,6 +1,7 @@
 
-import { Movie } from '../Card/interfaces'
+import { Movies } from '../Card/interfaces'
 
 export interface Props {
-  movies: Movie[]
+  movies: Movies,
+  onLoadMore: Function
 }

@@ -5,7 +5,6 @@
 import {
   GENRES_ACTION_REQUEST,
   GENRES_ACTION_SUCCESS,
-  GENRES_ACTION_ERROR
 } from './constants'
 
 /**
@@ -24,14 +23,4 @@ export const getGenresRequestAction = () => ({
 export const getGenresSuccessAction = data => ({
   type: GENRES_ACTION_SUCCESS,
   data
-})
-
-/**
- * @function getGenresErrorAction
- * @param {object} error - error
- * @return {object} { type, error }
- */
-export const getGenresErrorAction = error => ({
-  type: GENRES_ACTION_ERROR,
-  ...error
 })

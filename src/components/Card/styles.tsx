@@ -7,6 +7,10 @@ const CardMovie = styled(Card)`
     justify-content: space-between;
   }
 
+  .content {
+    height: 115px;
+  }
+
   .link {
     cursor: pointer;
     font-size: 1.5rem;

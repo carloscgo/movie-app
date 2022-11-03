@@ -8,15 +8,17 @@ import { axios } from '../../services'
 /** ACTIONS */
 import {
   getGenresSuccessAction,
-  getGenresErrorAction
 } from './actions'
+import {
+  getErrorAction,
+} from '../getError/actions'
 
 /** CONSTANTS */
 import { GENRES_ACTION_REQUEST } from './constants'
 
 /**
  * @function getGenres
- * @yields getGenresSuccessAction / getGenresErrorAction
+ * @yields getGenresSuccessAction / getErrorAction
  */
 export function * getGenres () {
   try {
@@ -24,15 +26,15 @@ export function * getGenres () {
 
     yield put(getGenresSuccessAction(data))
   } catch (err) {
-    yield put(getGenresErrorAction(err.message))
+    yield put(getErrorAction(err.message))
   }
 }
 
 /**
- * @function watchLGenresAction
+ * @function watchGenresAction
  * @yields getGenres
  */
-export function * watchLGenresAction () {
+export function * watchGenresAction () {
   yield takeLatest(GENRES_ACTION_REQUEST, getGenres)
 }
 
@@ -42,6 +44,6 @@ export function * watchLGenresAction () {
  */
 export default function * saga () {
   yield all([
-    watchLGenresAction(),
+    watchGenresAction(),
   ])
 }

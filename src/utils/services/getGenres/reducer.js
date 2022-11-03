@@ -8,8 +8,15 @@ import uniqBy from 'lodash/uniqBy'
 import {
   GENRES_ACTION_REQUEST,
   GENRES_ACTION_SUCCESS,
-  GENRES_ACTION_ERROR
 } from './constants'
+
+import {
+  ACTION_ERROR
+} from '../getError/constants'
+
+import {
+  setStorage
+} from '../'
 
 export const initialState = {
   loading: false,
@@ -35,11 +42,12 @@ const reducer = (state = initialState, action) =>
             label: item.genre
           }))
         ], 'value')
+
+        setStorage('genres', draft.data)
         break
 
-      case GENRES_ACTION_ERROR:
+      case ACTION_ERROR:
         draft.loading = false
-        draft.error = action.error
         break
 
       default:

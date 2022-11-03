@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Link } from "react-router-dom";
 import { Nav, Form, InputGroup, Button } from 'react-bootstrap';
 import Select from 'react-select';
+import get from 'lodash/get';
 
 import Container from './styles';
 import { ITEM } from './constants';
 import { routes, __VITE_APP__ } from '../../utils/constants'
 import { Props } from './interfaces';
 
-const customStyles = {
+import {
+  setStorage, getStorage
+} from '../../utils/services'
+
+const genresStyles = {
   option: (provided: any, state: any) => ({
     ...provided,
     borderBottom: '1px solid var(--bs-gray-300)',
     color: state.isSelected ? 'white' : 'blue',
     padding: 10,
+    width: '100%',
   }),
   control: () => ({
     width: 200,
@@ -27,9 +33,42 @@ const customStyles = {
   }
 }
 
-const NavBar = ({ genres }: Props) => {
+const limitStyles = {
+  ...genresStyles,
+
+  control: () => ({
+    width: 100,
+    display: 'flex'
+  }),
+}
+
+const NavBar = ({ genres, paginate, onSearch }: Props) => {
+  const defaultLimit: any = {
+    value: get(getStorage('search-limit'), 'value', 10),
+    label: get(getStorage('search-limit'), 'label', 10),
+  }
+  const defaultGenre: any = {
+    value: get(getStorage('search-genre'), 'value', ''),
+    label: get(getStorage('search-genre'), 'label', 'Todos'),
+  }
+  const defaultTitle: any = getStorage('search-title') || ''
+
   const [menu, setMenu] = useState('')
-  const [selectedOption, setSelectedOption] = useState({ value: '', label: 'All' });
+  const [selectedGenre, setSelectedGenre] = useState(defaultGenre);
+  const [selectedLimit, setSelectedLimit] = useState(defaultLimit);
+  const [textSearch, setTextSearch] = useState(defaultTitle);
+
+  const onSearchMovies = () => {
+    setStorage('search-title', textSearch)
+    setStorage('search-genre', selectedGenre)
+    setStorage('search-limit', selectedLimit)
+
+    onSearch({
+      genreId: selectedGenre.value,
+      limit: selectedLimit.value,
+      title: textSearch,
+    })
+  }
 
   return (
     <Container fluid className='d-flex flex-wrap text-bg-dark'>
@@ -52,23 +91,37 @@ const NavBar = ({ genres }: Props) => {
         ))}
       </Nav>
 
-      <InputGroup className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 input-search">
+      <InputGroup size="sm" className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 input-search">
         <Select
-          defaultValue={selectedOption}
-          onChange={(e: any) => setSelectedOption(e)}
+          defaultValue={selectedGenre}
+          onChange={(e: any) => setSelectedGenre(e)}
           name="category"
           className="form-control"
-          placeholder="Select a Category"
-          styles={customStyles}
+          placeholder="Categoria"
+          styles={genresStyles}
           isClearable={true}
           isSearchable={true}
           isLoading={genres.loading}
           options={genres.data}
         />
 
-        <Form.Control type="search" placeholder="Search by Title" />
+        <Form.Control type="search" placeholder="Titulo de Pelicula" defaultValue={textSearch} onInput={(e: any) => setTextSearch(e.target.value)} />
 
-        <Button type="button" className="btn btn-light">
+        <Select
+          defaultValue={selectedLimit}
+          onChange={(e: any) => setSelectedLimit(e)}
+          name="limit"
+          className="form-control"
+          placeholder="Registros"
+          styles={limitStyles}
+          isSearchable={false}
+          options={[10, 20, 50].map(limit => ({
+            value: limit,
+            label: limit
+          }))}
+        />
+
+        <Button type="button" className="btn btn-light" onClick={() => onSearchMovies()}>
           <i className='bi bi-search-heart-fill'></i>
         </Button>
       </InputGroup>
@@ -76,4 +129,4 @@ const NavBar = ({ genres }: Props) => {
   )
 }
 
-export default NavBar
+export default memo(NavBar)

@@ -14,7 +14,7 @@ const Card = ({ movie }: Props) => {
         />
       </Link>
 
-      <Container.Body>
+      <Container.Body className="content">
         <Container.Title>{movie.title}</Container.Title>
         <Container.Text>
           {movie.date}

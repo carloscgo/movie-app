@@ -7,32 +7,54 @@ import { axios } from '../../services'
 
 /** ACTIONS */
 import {
-  getGenresSuccessAction,
-  getGenresErrorAction
+  getMoviesSuccessAction,
 } from './actions'
+import {
+  getErrorAction,
+} from '../getError/actions'
 
 /** CONSTANTS */
 import { MOVIES_ACTION_REQUEST } from './constants'
 
 /**
  * @function getMovies
- * @yields getGenresSuccessAction / getGenresErrorAction
+ * @yields getMoviesSuccessAction / getErrorAction
  */
-export function * getMovies () {
-  try {
-    const data = yield axios.get('static/genres').then(response => response.data.results)
+export function * getMovies ({ genreId, title, limit, offset }) {
+  const params = {
+    order_by: 'date', 
+    type: 'movie',
+    limit, 
+    offset
+  }
 
-    yield put(getGenresSuccessAction(data))
+  if (genreId) {
+    params.genre_list = genreId
+  }
+
+  if (title) {
+    params.title = title
+  }
+
+  try {
+    if (genreId || title) {
+      const { 
+        results: data, 
+        Object: paginate 
+      } = yield axios.get('/search/titles', { params }).then(response => response.data)
+
+      yield put(getMoviesSuccessAction(data, paginate))
+    }
   } catch (err) {
-    yield put(getGenresErrorAction(err.message))
+    yield put(getErrorAction(err.message))
   }
 }
 
 /**
- * @function watchLGenresAction
+ * @function watchMoviesAction
  * @yields getMovies
  */
-export function * watchLGenresAction () {
+export function * watchMoviesAction () {
   yield takeLatest(MOVIES_ACTION_REQUEST, getMovies)
 }
 
@@ -42,6 +64,6 @@ export function * watchLGenresAction () {
  */
 export default function * saga () {
   yield all([
-    watchLGenresAction(),
+    watchMoviesAction(),
   ])
 }

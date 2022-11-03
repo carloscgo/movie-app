@@ -10,11 +10,16 @@ axios.defaults.headers.common['X-RapidAPI-Key'] = __VITE_APP__.API_KEY;
 axios.defaults.headers.common['X-RapidAPI-Host'] = __VITE_APP__.API_HOST;
 axios.defaults.baseURL = `https://${__VITE_APP__.API_HOST}/`
 
+const setStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
+const getStorage = (key) => JSON.parse(localStorage.getItem(key))
+
 export {
   connect,
   createStructuredSelector,
   compose,
   useInjectReducer,
   useInjectSaga,
-  axios
+  axios,
+  setStorage,
+  getStorage
 }
