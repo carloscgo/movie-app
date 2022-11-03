@@ -33,6 +33,7 @@ export default ({ key, reducer }) => WrappedComponent => {
 
 const useInjectReducer = ({ key, reducer }) => {
   const context = React.useContext(ReactReduxContext)
+
   React.useEffect(() => {
     getInjectors(context.store).injectReducer(key, reducer)
   }, [])
