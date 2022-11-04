@@ -1,7 +1,7 @@
 export default {
   home: '/',
   movie: '/movie/:id',
-  categories: '/category/:category',
   favorites: '/favorites',
+  deletes: '/deletes',
   addMovie: '/add-movie'
 }

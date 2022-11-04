@@ -8,6 +8,10 @@ import uniqBy from 'lodash/uniqBy'
 import {
   MOVIES_ACTION_REQUEST,
   MOVIES_ACTION_SUCCESS,
+  MOVIES_ACTION_FAVORITE,
+  MOVIES_ACTION_UNFAVORITE,
+  MOVIES_ACTION_DELETE,
+  MOVIES_ACTION_UNDELETE
 } from './constants'
 
 import {
@@ -15,28 +19,35 @@ import {
 } from '../getError/constants'
 
 import {
-  setStorage
+  setStorage,
+  getStorage
 } from '../'
 
 export const initialState = {
   loading: false,
   error: null,
   data: [],
-  paginate: {
-    total: 0,
-    limit: 10,
-    offset: 0
-  }
+  favorites: [],
+  deletes: []
 }
 
-function convertHTMLEntity(text){
-    const span = document.createElement('span');
+const convertHTMLEntity = (text) => {
+  const span = document.createElement('span');
 
-    return text
+  return text
     .replace(/&[#A-Za-z0-9]+;/gi, (entity,position,text)=> {
         span.innerHTML = entity;
         return span.innerText;
     });
+}
+
+const setDataFromStorage = ({ draft, state, action, name }) => {
+  draft[name] = uniqBy([
+    ...state[name],
+    ...getStorage(name, []),
+    action.data
+  ], 'id')
+  setStorage(name, draft[name])
 }
 
 const reducer = (state = initialState, action) =>
@@ -60,10 +71,26 @@ const reducer = (state = initialState, action) =>
             description: item.synopsis,
           }))
         ], 'id')
-        draft.paginate = action.paginate
 
         setStorage('movies', draft.data)
-        setStorage('paginate', draft.paginate)
+        break
+
+      case MOVIES_ACTION_FAVORITE:
+        setDataFromStorage({ draft, state, action, name: 'favorites' }) 
+        break
+
+      case MOVIES_ACTION_UNFAVORITE:
+        draft.favorites = draft.favorites.filter(item => item.id !== action.data.id)
+        setStorage('favorites', draft.favorites)
+        break
+
+      case MOVIES_ACTION_DELETE:
+        setDataFromStorage({ draft, state, action, name: 'deletes' }) 
+        break
+
+      case MOVIES_ACTION_UNDELETE:
+        draft.deletes = draft.deletes.filter(item => item.id !== action.data.id)
+        setStorage('deletes', draft.deletes)
         break
 
       case ACTION_ERROR:

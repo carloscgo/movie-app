@@ -1,29 +1,28 @@
-import { Col, Row, Button } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Card from '../Card'
 import { Props } from './interfaces';
 
-const Movies = ({ movies, onLoadMore }: Props) => {
+const Movies = ({ movies, onFavorite, onDelete, type }: Props) => {
   return (
     <div className='d-flex flex-column'>
+      {movies.loading && (
+        <div className='w-100 p-4 mt-3 mb-1 d-flex align-items-center justify-content-center'>
+          <label
+            className="text-white"
+          >
+            Cargando....
+          </label>
+        </div>
+      )}
+
       <div className='p-4'>
         <Row xs={1} md={2} lg={4} className="g-4">
           {movies.data.map((movie: any) => (
             <Col key={movie.id}>
-              <Card movie={movie} />
+              <Card movie={movie} onFavorite={onFavorite} onDelete={onDelete} type={type} />
             </Col>
           ))}
         </Row>
-      </div>
-
-      <div className='w-100 p-4 mt-3 mb-4 d-flex align-items-center justify-content-center'>
-        <Button
-          type="button"
-          variant="secondary"
-          disabled={movies.loading}
-          onClick={() => onLoadMore()}
-        >
-          {movies.loading ? 'Cargando....' : 'Cargar Más'}
-        </Button>
       </div>
     </div>
   )

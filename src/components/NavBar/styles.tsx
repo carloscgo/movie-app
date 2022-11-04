@@ -20,13 +20,22 @@ const NavBar = styled(Container)`
   .nav-link {
     &:not(.active) {
       &:hover {
-        color: var(--bs-primary) !important;
+        &.favorite {
+          color: var(--bs-danger) !important;
+        }
+        &.new {
+          color: var(--bs-primary) !important;
+        }        
       }
     }
 
     &.active {
-      color: var(--bs-primary) !important;
-    }
+      &.favorite {
+        color: var(--bs-danger) !important;
+      }
+      &.new {
+        color: var(--bs-primary) !important;
+      }       }
   }
 `
 

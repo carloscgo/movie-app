@@ -10,9 +10,11 @@ export interface Movie {
 export interface Movies {
   loading: boolean,
   data: any[],
-  paginate: any
 }
 
 export interface Props {
-  movie: Movie
+  movie: Movie,
+  onFavorite?: Function | undefined,
+  onDelete?: Function | undefined,
+  type: string
 }

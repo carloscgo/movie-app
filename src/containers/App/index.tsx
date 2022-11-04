@@ -6,8 +6,8 @@ import NavBar from '../../components/NavBar';
 import Movies from '../../components/Movies';
 import Details from '../../components/Details';
 import Error from '../../components/Error';
+import { TYPES } from '../../components/Card/constants'
 
-import { Movie } from '../../components/Card/interfaces'
 import { routes } from '../../utils/constants'
 import {
   connect,
@@ -20,13 +20,19 @@ import {
   getGenresRequestAction
 } from '../../utils/services/getGenres/actions'
 import {
-  getMoviesRequestAction
+  getMoviesRequestAction,
+  getMoviesFavoriteAction,
+  getMoviesUnfavoriteAction,
+  getMoviesDeleteAction,
+  getMoviesUndeleteAction
 } from '../../utils/services/getMovies/actions'
 import {
   makeDataSelector as makeDataSelectorGenres
 } from '../../utils/services/getGenres/selectors'
 import {
-  makeDataSelector as makeDataSelectorMovies
+  makeDataSelector as makeDataSelectorMovies,
+  makeFavoritesSelector,
+  makeDeletesSelector
 } from '../../utils/services/getMovies/selectors'
 import {
   makeDataSelector as makeDataSelectorError
@@ -43,9 +49,15 @@ import { Props } from './interfaces';
 const App: any = ({
   genres,
   movies,
+  favorites,
+  deletes,
   error,
   getGenresActionHandler,
-  getMoviesActionHandler
+  getMoviesActionHandler,
+  favoriteMovieActionHandler,
+  unfavoriteMovieActionHandler,
+  deleteMovieActionHandler,
+  restoreMovieActionHandler
 }: Props) => {
   useInjectReducer({ key: 'genres', reducer: reducerGenres })
   useInjectSaga({ key: 'genres', saga: sagaGenres })
@@ -62,16 +74,32 @@ const App: any = ({
   return (
     <Container fluid className="d-flex flex-nowrap p-0 main-content bg-secondary">
       <Container.Content>
-        <NavBar genres={genres} paginate={movies.paginate} onSearch={(e: any) => getMoviesActionHandler({ ...e, offset: 0 })} />
+        <NavBar
+          genres={genres}
+          onSearch={(e: any) => getMoviesActionHandler(e)}
+        />
 
         {error && <Error message={error} />}
 
         <Routes>
-          <Route path={routes.favorites} element={<div>favorites</div>} />
           <Route path={routes.addMovie} element={<div>addMovie</div>} />
-          <Route path={routes.categories} element={<div>categories</div>} />
           <Route path={routes.movie} element={<Details />} />
-          <Route path={routes.home} element={<Movies movies={movies} onLoadMore={() => console.log('onLoadMore')} />} />
+          <Route path={routes.home} element={<Movies
+            movies={movies}
+            type={TYPES.list}
+            onFavorite={(e: any) => favoriteMovieActionHandler(e)}
+            onDelete={(e: any) => deleteMovieActionHandler(e)}
+          />} />
+          <Route path={routes.favorites} element={<Movies
+            movies={favorites}
+            type={TYPES.favorite}
+            onFavorite={(e: any) => unfavoriteMovieActionHandler(e)}
+          />} />
+          <Route path={routes.deletes} element={<Movies
+            movies={deletes}
+            type={TYPES.deletes}
+            onDelete={(e: any) => restoreMovieActionHandler(e)}
+          />} />
         </Routes>
       </Container.Content>
     </Container>
@@ -81,12 +109,18 @@ const App: any = ({
 const mapStateToProps = createStructuredSelector({
   genres: makeDataSelectorGenres(),
   movies: makeDataSelectorMovies(),
+  favorites: makeFavoritesSelector(),
+  deletes: makeDeletesSelector(),
   error: makeDataSelectorError()
 })
 
 export const mapDispatchToProps = (dispatch: Function) => ({
   getGenresActionHandler: () => dispatch(getGenresRequestAction()),
-  getMoviesActionHandler: ({ offset, limit, genreId, title }: any) => dispatch(getMoviesRequestAction({ offset, limit, genreId, title }))
+  getMoviesActionHandler: ({ offset, limit, genreId, title }: any) => dispatch(getMoviesRequestAction({ offset, limit, genreId, title })),
+  favoriteMovieActionHandler: (data: any) => dispatch(getMoviesFavoriteAction({ data })),
+  unfavoriteMovieActionHandler: (data: any) => dispatch(getMoviesUnfavoriteAction({ data })),
+  deleteMovieActionHandler: (data: any) => dispatch(getMoviesDeleteAction({ data })),
+  restoreMovieActionHandler: (data: any) => dispatch(getMoviesUndeleteAction({ data })),
 })
 
 const withConnect = connect(

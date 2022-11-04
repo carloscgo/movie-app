@@ -6,6 +6,5 @@ export interface Genres {
 
 export interface Props {
   genres: Genres,
-  paginate: any,
   onSearch: Function
 }

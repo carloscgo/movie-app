@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import uniqBy from 'lodash/uniqBy'
 
 import { initialState } from './reducer'
 
@@ -19,7 +20,36 @@ export const makeDataSelector = () =>
     selectDomain,
     substate => ({
       ...substate,
-      data: getStorage('movies') || substate.data,
-      paginate: getStorage('paginate') || substate.paginate,
+      data: uniqBy(
+        [...(getStorage('movies', [])), ...substate.data].filter((item: any) => !getStorage('deletes').map((deleted: any) => deleted.id).includes(item.id)),
+        'id')
     })
   )
+
+/**
+ * @function makeFavoritesSelector
+ * @return {string} data from state
+ */
+export const makeFavoritesSelector = () =>
+  createSelector(
+    selectDomain,
+    substate => ({
+      ...substate,
+      data: uniqBy(
+        [...(getStorage('favorites', [])), ...substate.favorites].filter((item: any) => !getStorage('deletes').map((deleted: any) => deleted.id).includes(item.id)),
+        'id')
+    }))
+
+/**
+ * @function makeDeletesSelector
+ * @return {string} data from state
+ */
+export const makeDeletesSelector = () =>
+  createSelector(
+    selectDomain,
+    substate => ({
+      ...substate,
+      data: uniqBy(
+        [...(getStorage('deletes', [])), ...substate.deletes],
+        'id')
+    }))

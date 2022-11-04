@@ -40,10 +40,9 @@ export function * getMovies ({ genreId, title, limit, offset }) {
     if (genreId || title) {
       const { 
         results: data, 
-        Object: paginate 
       } = yield axios.get('/search/titles', { params }).then(response => response.data)
 
-      yield put(getMoviesSuccessAction(data, paginate))
+      yield put(getMoviesSuccessAction(data))
     }
   } catch (err) {
     yield put(getErrorAction(err.message))

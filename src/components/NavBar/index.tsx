@@ -1,5 +1,5 @@
 import { useState, memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Nav, Form, InputGroup, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import get from 'lodash/get';
@@ -42,7 +42,7 @@ const limitStyles = {
   }),
 }
 
-const NavBar = ({ genres, paginate, onSearch }: Props) => {
+const NavBar = ({ genres, onSearch }: Props) => {
   const defaultLimit: any = {
     value: get(getStorage('search-limit'), 'value', 10),
     label: get(getStorage('search-limit'), 'label', 10),
@@ -58,6 +58,8 @@ const NavBar = ({ genres, paginate, onSearch }: Props) => {
   const [selectedLimit, setSelectedLimit] = useState(defaultLimit);
   const [textSearch, setTextSearch] = useState(defaultTitle);
 
+  const navigate = useNavigate()
+
   const onSearchMovies = () => {
     setStorage('search-title', textSearch)
     setStorage('search-genre', selectedGenre)
@@ -68,6 +70,8 @@ const NavBar = ({ genres, paginate, onSearch }: Props) => {
       limit: selectedLimit.value,
       title: textSearch,
     })
+
+    navigate(routes.home)
   }
 
   return (
@@ -83,7 +87,7 @@ const NavBar = ({ genres, paginate, onSearch }: Props) => {
             <Link
               to={item.route}
               onClick={() => setMenu(item.route)}
-              className={`nav-link link-dark px-2 ${menu === item.route ? 'active' : ''}`}
+              className={`nav-link text-white px-2 ${item.active} ${menu === item.route ? 'active' : ''}`}
             >
               <i className={`bi ${item.icon}`}></i> {item.title}
             </Link>

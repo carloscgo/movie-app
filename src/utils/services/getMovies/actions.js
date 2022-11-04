@@ -5,6 +5,10 @@
 import {
   MOVIES_ACTION_REQUEST,
   MOVIES_ACTION_SUCCESS,
+  MOVIES_ACTION_FAVORITE,
+  MOVIES_ACTION_UNFAVORITE,
+  MOVIES_ACTION_DELETE,
+  MOVIES_ACTION_UNDELETE
 } from './constants'
 
 /**
@@ -26,11 +30,50 @@ export const getMoviesRequestAction = ({ offset, limit, genreId, title }) => ({
 /**
  * @function getMoviesSuccessAction
  * @param {Array} data - Movies
- * @param {object} paginate - Paginate
  * @return {object} { type, data }
  */
-export const getMoviesSuccessAction = (data, paginate) => ({
+export const getMoviesSuccessAction = (data) => ({
   type: MOVIES_ACTION_SUCCESS,
   data,
-  paginate
 })
+
+/**
+ * @function getMoviesFavoriteAction
+ * @param {object} data - Movie
+ * @return {object} { type, data }
+ */
+export const getMoviesFavoriteAction = ({ data }) => ({
+  type: MOVIES_ACTION_FAVORITE,
+  data
+})
+
+/**
+ * @function getMoviesUnfavoriteAction
+ * @param {object} data - Movie
+ * @return {object} { type, data }
+ */
+export const getMoviesUnfavoriteAction = ({ data }) => ({
+  type: MOVIES_ACTION_UNFAVORITE,
+  data
+})
+
+/**
+ * @function getMoviesDeleteAction
+ * @param {object} data - Movie
+ * @return {object} { type, data }
+ */
+export const getMoviesDeleteAction = ({ data }) => ({
+  type: MOVIES_ACTION_DELETE,
+  data
+})
+
+/**
+ * @function getMoviesUndeleteAction
+ * @param {object} data - Movie
+ * @return {object} { type, data }
+ */
+export const getMoviesUndeleteAction = ({ data }) => ({
+  type: MOVIES_ACTION_UNDELETE,
+  data
+})
+
