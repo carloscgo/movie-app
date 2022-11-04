@@ -13,8 +13,8 @@ export interface Movies {
 }
 
 export interface Props {
-  movie: Movie,
-  onFavorite?: Function | undefined,
-  onDelete?: Function | undefined,
-  type: string
+  movie: Movie;
+  onFavorite?: Function | undefined;
+  onDelete?: Function | undefined;
+  type: string;
 }

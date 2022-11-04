@@ -11,7 +11,8 @@ import {
   MOVIES_ACTION_FAVORITE,
   MOVIES_ACTION_UNFAVORITE,
   MOVIES_ACTION_DELETE,
-  MOVIES_ACTION_UNDELETE
+  MOVIES_ACTION_UNDELETE,
+  MOVIES_ACTION_ADD
 } from './constants'
 
 import {
@@ -91,6 +92,22 @@ const reducer = (state = initialState, action) =>
       case MOVIES_ACTION_UNDELETE:
         draft.deletes = draft.deletes.filter(item => item.id !== action.data.id)
         setStorage('deletes', draft.deletes)
+        break
+
+        case MOVIES_ACTION_ADD:
+          draft.data = uniqBy([
+            ...state.data,
+            {
+              id: action.data.id,
+              img: action.data.img,
+              genre: action.data.genre,
+              title: convertHTMLEntity(action.data.title),
+              date: (new Date(action.data.date)).toLocaleDateString("en-US"),
+              description: action.data.description,
+            }
+          ], 'id')
+
+          setStorage('movies', draft.data)
         break
 
       case ACTION_ERROR:

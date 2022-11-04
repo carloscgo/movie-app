@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { routes } from '../../utils/constants'
-import Container from './styles';
+import Container, { Image } from './styles';
 import { Props } from './interfaces';
 import { TYPES } from './constants';
 
@@ -18,7 +18,7 @@ const Card = ({ movie, onFavorite, onDelete, type }: Props) => {
   return (
     <Container style={{ width: '18rem' }} bg="dark" text="white">
       <Link to={routes.movie.replace(':id', movie.id)} state={movie}>
-        <Container.Img
+        <Image
           variant="top"
           src={movie.img}
         />

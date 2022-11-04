@@ -8,7 +8,8 @@ import {
   MOVIES_ACTION_FAVORITE,
   MOVIES_ACTION_UNFAVORITE,
   MOVIES_ACTION_DELETE,
-  MOVIES_ACTION_UNDELETE
+  MOVIES_ACTION_UNDELETE,
+  MOVIES_ACTION_ADD
 } from './constants'
 
 /**
@@ -74,6 +75,16 @@ export const getMoviesDeleteAction = ({ data }) => ({
  */
 export const getMoviesUndeleteAction = ({ data }) => ({
   type: MOVIES_ACTION_UNDELETE,
+  data
+})
+
+/**
+ * @function getMoviesAddAction
+ * @param {object} data - Movie
+ * @return {object} { type, data }
+ */
+export const getMoviesAddAction = ({ data }) => ({
+  type: MOVIES_ACTION_ADD,
   data
 })
 

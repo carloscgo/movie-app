@@ -1,10 +1,10 @@
 
 export interface Genres {
-  loading: boolean,
-  data: any[]
+  loading: boolean;
+  data: any[];
 }
 
 export interface Props {
-  genres: Genres,
-  onSearch: Function
+  genres: Genres;
+  onSearch: Function;
 }

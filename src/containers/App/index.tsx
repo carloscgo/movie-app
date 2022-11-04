@@ -5,6 +5,7 @@ import isEmpty from "lodash/isEmpty";
 import NavBar from '../../components/NavBar';
 import Movies from '../../components/Movies';
 import Details from '../../components/Details';
+import FormMovie from '../../components/FormMovie';
 import Error from '../../components/Error';
 import { TYPES } from '../../components/Card/constants'
 
@@ -24,7 +25,8 @@ import {
   getMoviesFavoriteAction,
   getMoviesUnfavoriteAction,
   getMoviesDeleteAction,
-  getMoviesUndeleteAction
+  getMoviesUndeleteAction,
+  getMoviesAddAction
 } from '../../utils/services/getMovies/actions'
 import {
   makeDataSelector as makeDataSelectorGenres
@@ -57,7 +59,8 @@ const App: any = ({
   favoriteMovieActionHandler,
   unfavoriteMovieActionHandler,
   deleteMovieActionHandler,
-  restoreMovieActionHandler
+  restoreMovieActionHandler,
+  addMovieActionHandler
 }: Props) => {
   useInjectReducer({ key: 'genres', reducer: reducerGenres })
   useInjectSaga({ key: 'genres', saga: sagaGenres })
@@ -82,7 +85,7 @@ const App: any = ({
         {error && <Error message={error} />}
 
         <Routes>
-          <Route path={routes.addMovie} element={<div>addMovie</div>} />
+          <Route path={routes.addMovie} element={<FormMovie genres={genres.data} onSave={(e: any) => addMovieActionHandler(e)} />} />
           <Route path={routes.movie} element={<Details />} />
           <Route path={routes.home} element={<Movies
             movies={movies}
@@ -121,6 +124,7 @@ export const mapDispatchToProps = (dispatch: Function) => ({
   unfavoriteMovieActionHandler: (data: any) => dispatch(getMoviesUnfavoriteAction({ data })),
   deleteMovieActionHandler: (data: any) => dispatch(getMoviesDeleteAction({ data })),
   restoreMovieActionHandler: (data: any) => dispatch(getMoviesUndeleteAction({ data })),
+  addMovieActionHandler: (data: any) => dispatch(getMoviesAddAction({ data })),
 })
 
 const withConnect = connect(

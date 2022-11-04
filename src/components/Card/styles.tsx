@@ -21,4 +21,11 @@ const CardMovie = styled(Card)`
   }
 `
 
+export const Image = styled(Card.Img)`
+  background-image: url(${({ src }: any) => src});
+  background-size: cover;
+  width: 100%;
+  height: 407px;
+`
+
 export default CardMovie
