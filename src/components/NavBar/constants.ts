@@ -1,13 +1,7 @@
-import { routes } from '../../utils/constants'
+import { routes } from '../../utils/constants';
+import { Item } from './interface';
 
-export interface Item {
-  title: string;
-  icon: string;
-  route: string;
-  active: string;
-}
-
-export const ITEM:Item[] = [{
+export const ITEM: Item[] = [{
   title: 'Favoritos',
   icon: 'bi-suit-heart-fill',
   active: 'favorite',
@@ -22,4 +16,4 @@ export const ITEM:Item[] = [{
   icon: 'bi-trash-fill',
   active: 'deletes',
   route: routes.deletes
-}]
+}];

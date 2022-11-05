@@ -1,25 +1,24 @@
-import { memo, useEffect } from 'react'
+import React, { memo, useEffect } from 'react';
 import { Routes, Route } from "react-router-dom";
-import isEmpty from "lodash/isEmpty";
 
 import NavBar from '../../components/NavBar';
 import Movies from '../../components/Movies';
 import Details from '../../components/Details';
 import FormMovie from '../../components/FormMovie';
 import Error from '../../components/Error';
-import { TYPES } from '../../components/Card/constants'
+import { TYPES } from '../../components/Card/constants';
 
-import { routes } from '../../utils/constants'
+import { routes } from '../../utils/constants';
 import {
   connect,
   createStructuredSelector,
   compose,
   useInjectReducer,
   useInjectSaga,
-} from '../../utils/services'
+} from '../../utils/services';
 import {
   getGenresRequestAction
-} from '../../utils/services/getGenres/actions'
+} from '../../utils/services/getGenres/actions';
 import {
   getMoviesRequestAction,
   getMoviesFavoriteAction,
@@ -27,28 +26,28 @@ import {
   getMoviesDeleteAction,
   getMoviesUndeleteAction,
   getMoviesAddAction
-} from '../../utils/services/getMovies/actions'
+} from '../../utils/services/getMovies/actions';
 import {
   makeDataSelector as makeDataSelectorGenres
-} from '../../utils/services/getGenres/selectors'
+} from '../../utils/services/getGenres/selectors';
 import {
   makeDataSelector as makeDataSelectorMovies,
   makeFavoritesSelector,
   makeDeletesSelector
-} from '../../utils/services/getMovies/selectors'
+} from '../../utils/services/getMovies/selectors';
 import {
   makeDataSelector as makeDataSelectorError
-} from '../../utils/services/getError/selectors'
-import reducerGenres from '../../utils/services/getGenres/reducer'
-import reducerMovies from '../../utils/services/getMovies/reducer'
-import reducerError from '../../utils/services/getError/reducer'
-import sagaGenres from '../../utils/services/getGenres/saga'
-import sagaMovies from '../../utils/services/getMovies/saga'
+} from '../../utils/services/getError/selectors';
+import reducerGenres from '../../utils/services/getGenres/reducer';
+import reducerMovies from '../../utils/services/getMovies/reducer';
+import reducerError from '../../utils/services/getError/reducer';
+import sagaGenres from '../../utils/services/getGenres/saga';
+import sagaMovies from '../../utils/services/getMovies/saga';
 
 import Container from './styles';
-import { Props } from './interfaces';
+import { Props } from './interface';
 
-const App: any = ({
+const App = ({
   genres,
   movies,
   favorites,
@@ -71,7 +70,7 @@ const App: any = ({
   useInjectReducer({ key: 'error', reducer: reducerError })
 
   useEffect(() => {
-    isEmpty(genres) && getGenresActionHandler()
+    getGenresActionHandler()
   }, [])
 
   return (
@@ -107,7 +106,7 @@ const App: any = ({
       </Container.Content>
     </Container>
   )
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   genres: makeDataSelectorGenres(),
@@ -115,7 +114,7 @@ const mapStateToProps = createStructuredSelector({
   favorites: makeFavoritesSelector(),
   deletes: makeDeletesSelector(),
   error: makeDataSelectorError()
-})
+});
 
 export const mapDispatchToProps = (dispatch: Function) => ({
   getGenresActionHandler: () => dispatch(getGenresRequestAction()),
@@ -125,14 +124,16 @@ export const mapDispatchToProps = (dispatch: Function) => ({
   deleteMovieActionHandler: (data: any) => dispatch(getMoviesDeleteAction({ data })),
   restoreMovieActionHandler: (data: any) => dispatch(getMoviesUndeleteAction({ data })),
   addMovieActionHandler: (data: any) => dispatch(getMoviesAddAction({ data })),
-})
+});
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps
-)
+);
+
+type IParentProps = {};
 
 export default compose(
   withConnect,
   memo
-)(App)
+)(App) as React.FunctionComponent<IParentProps>;

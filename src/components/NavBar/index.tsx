@@ -1,17 +1,15 @@
-import { useState, memo } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Nav, Form, InputGroup, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import get from 'lodash/get';
 
+import { routes, VITE_APP } from '../../utils/constants';
+import { setStorage, getStorage } from '../../utils/services';
+
 import Container from './styles';
 import { ITEM } from './constants';
-import { routes, __VITE_APP__ } from '../../utils/constants'
-import { Props } from './interfaces';
-
-import {
-  setStorage, getStorage
-} from '../../utils/services'
+import { IProps } from './interface';
 
 const genresStyles = {
   option: (provided: any, state: any) => ({
@@ -31,7 +29,7 @@ const genresStyles = {
 
     return { ...provided, opacity, transition };
   }
-}
+};
 
 const limitStyles = {
   ...genresStyles,
@@ -40,9 +38,9 @@ const limitStyles = {
     width: 100,
     display: 'flex'
   }),
-}
+};
 
-const NavBar = ({ genres, onSearch }: Props) => {
+const NavBar = ({ genres, onSearch }: IProps) => {
   const defaultLimit: any = {
     value: get(getStorage('search-limit'), 'value', 10),
     label: get(getStorage('search-limit'), 'label', 10),
@@ -78,7 +76,7 @@ const NavBar = ({ genres, onSearch }: Props) => {
     <Container fluid className='d-flex flex-wrap text-bg-dark'>
       <Link to={routes.home} className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none p-3">
         <i className="bi bi-camera-reels logo"></i>
-        <div className="text-bold">{__VITE_APP__.APP_NAME}</div>
+        <div className="text-bold">{VITE_APP.APP_NAME}</div>
       </Link>
 
       <Nav className="col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
@@ -131,6 +129,6 @@ const NavBar = ({ genres, onSearch }: Props) => {
       </InputGroup>
     </Container>
   )
-}
+};
 
-export default memo(NavBar)
+export default NavBar;

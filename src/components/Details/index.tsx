@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { Col, Row, Card } from 'react-bootstrap';
-import isEmpty from 'lodash/isEmpty'
+import isEmpty from 'lodash/isEmpty';
 
 const Details = () => {
   const { state } = useLocation();
@@ -28,6 +28,6 @@ const Details = () => {
       </Row>
     </div>
   )
-}
+};
 
-export default Details
+export default Details;

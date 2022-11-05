@@ -1,11 +1,11 @@
 import { useState, memo } from "react";
 import { Form, Button, FloatingLabel, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
-import { useForm } from 'react-hook-form'
-import { ErrorMessage } from '@hookform/error-message/dist'
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message/dist';
 import uuid from 'react-uuid';
 
-import { Props } from './interfaces';
+import { Props } from './interface';
 import Container from './styles';
 
 const FormMovie = ({ genres, onSave }: Props) => {
@@ -138,6 +138,6 @@ const FormMovie = ({ genres, onSave }: Props) => {
       </Row>
     </Container>
   )
-}
+};
 
-export default memo(FormMovie)
+export default memo(FormMovie);

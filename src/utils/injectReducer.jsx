@@ -1,8 +1,8 @@
-import React from 'react'
-import hoistNonReactStatics from 'hoist-non-react-statics'
-import { ReactReduxContext } from 'react-redux'
+import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
+import { ReactReduxContext } from 'react-redux';
 
-import getInjectors from './reducerInjectors'
+import getInjectors from './reducerInjectors';
 
 export default ({ key, reducer }) => WrappedComponent => {
   /**
@@ -17,19 +17,19 @@ export default ({ key, reducer }) => WrappedComponent => {
       WrappedComponent.name ||
       'Component'})`;
 
-    constructor (props, context) {
+    constructor(props, context) {
       super(props, context)
 
       getInjectors(context.store).injectReducer(key, reducer)
     }
 
-    render () {
+    render() {
       return <WrappedComponent {...this.props} />
     }
   }
 
   return hoistNonReactStatics(ReducerInjector, WrappedComponent)
-}
+};
 
 const useInjectReducer = ({ key, reducer }) => {
   const context = React.useContext(ReactReduxContext)
@@ -37,6 +37,6 @@ const useInjectReducer = ({ key, reducer }) => {
   React.useEffect(() => {
     getInjectors(context.store).injectReducer(key, reducer)
   }, [])
-}
+};
 
-export { useInjectReducer }
+export { useInjectReducer };

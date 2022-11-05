@@ -1,8 +1,8 @@
-import React from 'react'
-import hoistNonReactStatics from 'hoist-non-react-statics'
-import { ReactReduxContext } from 'react-redux'
+import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
+import { ReactReduxContext } from 'react-redux';
 
-import getInjectors from './sagaInjectors'
+import getInjectors from './sagaInjectors';
 
 /**
  * Dynamically injects a saga, passes component's props as saga arguments
@@ -48,7 +48,7 @@ export default ({ key, saga, mode }) => WrappedComponent => {
   }
 
   return hoistNonReactStatics(InjectSaga, WrappedComponent)
-}
+};
 
 const useInjectSaga = ({ key, saga, mode = undefined }) => {
   const context = React.useContext(ReactReduxContext)
@@ -62,6 +62,6 @@ const useInjectSaga = ({ key, saga, mode = undefined }) => {
       injectors.ejectSaga(key)
     }
   }, [])
-}
+};
 
-export { useInjectSaga }
+export { useInjectSaga };

@@ -1,19 +1,18 @@
 import { Link } from "react-router-dom";
-
-import { routes } from '../../utils/constants'
+import { routes } from '../../utils/constants';
 import Container, { Image } from './styles';
-import { Props } from './interfaces';
+import { Props } from './interface';
 import { TYPES } from './constants';
 
 const Card = ({ movie, onFavorite, onDelete, type }: Props) => {
   const iconFavorite = {
     [TYPES.list]: 'bi-heart-fill',
     [TYPES.favorite]: 'bi-heartbreak-fill',
-  }[type]
+  }[type];
   const iconDelete = {
     [TYPES.list]: 'bi-trash-fill',
     [TYPES.deletes]: 'bi-check-square-fill'
-  }[type]
+  }[type];
 
   return (
     <Container style={{ width: '18rem' }} bg="dark" text="white">
@@ -37,6 +36,6 @@ const Card = ({ movie, onFavorite, onDelete, type }: Props) => {
       </Container.Footer>
     </Container>
   )
-}
+};
 
 export default Card

@@ -1,5 +1,5 @@
 import Alert from 'react-bootstrap/Alert';
-import { Props } from './interfaces';
+import { Props } from './interface';
 
 const Error = ({ message }: Props) => {
   return (
@@ -7,6 +7,6 @@ const Error = ({ message }: Props) => {
       {message}
     </Alert>
   )
-}
+};
 
-export default Error
+export default Error;
