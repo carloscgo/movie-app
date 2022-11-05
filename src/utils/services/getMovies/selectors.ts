@@ -21,7 +21,7 @@ export const makeDataSelector = () =>
     substate => ({
       ...substate,
       data: uniqBy(
-        [...(getStorage('movies', [])), ...substate.data].filter((item: any) => !getStorage('deletes').map((deleted: any) => deleted.id).includes(item.id)),
+        [...(getStorage('movies', [])), ...substate.data].filter((item: any) => !getStorage('deletes', []).map((deleted: any) => deleted.id).includes(item.id)),
         'id')
     })
   );
@@ -36,7 +36,7 @@ export const makeFavoritesSelector = () =>
     substate => ({
       ...substate,
       data: uniqBy(
-        [...(getStorage('favorites', [])), ...substate.favorites].filter((item: any) => !getStorage('deletes').map((deleted: any) => deleted.id).includes(item.id)),
+        [...(getStorage('favorites', [])), ...substate.favorites].filter((item: any) => !getStorage('deletes', []).map((deleted: any) => deleted.id).includes(item.id)),
         'id')
     }));
 
